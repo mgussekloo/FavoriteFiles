@@ -125,6 +125,9 @@ class FavoriteFilesOpenCommand(sublime_plugin.WindowCommand):
                             count += 1
                     else:
                         error("The following file does not exist:\n%s" % n)
+
+                self.window.run_command("reveal_in_side_bar")
+
                 if focus_view is not None:
                     # Horrible ugly hack to ensure opened file gets focus
                     def fn(focus_view):
