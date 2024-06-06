@@ -25,6 +25,19 @@ class FavObj(object):
     file_name = ""
 
 
+class FavFolder(object):
+
+    @classmethod
+    def folder_adjust(cls, obj):
+        # Folder mode
+        if sublime.load_settings("favorite_files.sublime-settings").get('folder_mode', False):
+            window = sublime.active_window()
+            if window is not None:
+                folders = window.folders()
+                if (folders):
+                    obj.file_name = os.path.join(folders[0],  'favorite_files_list.json')
+                    obj.last_access = 0
+
 class FavProjects(object):
     """Project related actions."""
 
@@ -164,6 +177,8 @@ class FavFileMgr(object):
 
         errors = False
 
+        FavFolder.folder_adjust(obj)
+
         if not os.path.exists(obj.file_name) or force:
             try:
                 # Save as a JSON file
@@ -177,6 +192,8 @@ class FavFileMgr(object):
     @classmethod
     def load_favorites(cls, obj, clean=False):
         """Load favorites list."""
+
+        FavFolder.folder_adjust(obj)
 
         errors = False
         try:
@@ -210,6 +227,8 @@ class FavFileMgr(object):
         # Is project enabled
         FavProjects.project_adjust(obj, win_id, force)
 
+        FavFolder.folder_adjust(obj)
+
         if not os.path.exists(obj.file_name):
             if force:
                 # Create file list if it doesn't exist
@@ -238,6 +257,10 @@ class Favorites(object):
         self.obj.last_access = 0
         self.obj.file_name = self.obj.global_file
         self.open(self.obj)
+
+    def check_folder_mode(self):
+        if sublime.load_settings("favorite_files.sublime-settings").get('folder_mode', False):
+            FavFileMgr.load_favorite_files(self.obj, True, False, None)
 
     def open(self, win_id=None):
         """Open favorites."""

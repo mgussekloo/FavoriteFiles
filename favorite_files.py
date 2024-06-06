@@ -19,6 +19,7 @@ class FavoriteFilesCleanOrphansCommand(sublime_plugin.WindowCommand):
 
     def run(self):
         """Run the command."""
+        Favs.check_folder_mode()
 
         # Clean out all dead links
         if not Favs.load(clean=True, win_id=self.window.id()):
@@ -67,6 +68,7 @@ class FavoriteFilesEditAliasCommand(sublime_plugin.WindowCommand):
 
     def run(self):
         """Run the command."""
+        Favs.check_folder_mode()
 
         if not Favs.load(win_id=self.window.id()):
             self.files = Favs.all_files()
@@ -150,6 +152,7 @@ class FavoriteFilesOpenCommand(sublime_plugin.WindowCommand):
 
     def run(self):
         """Run the command."""
+        Favs.check_folder_mode()
 
         if not Favs.load(win_id=self.window.id()):
             self.files = Favs.all_files()
@@ -193,7 +196,6 @@ class FavoriteFilesAddCommand(sublime_plugin.WindowCommand):
 
     def add(self, names, group_name=None):
         """Add favorites."""
-
         disk_omit_count = 0
         added = 0
         # Iterate names and add them to group/global if not already added
@@ -359,9 +361,10 @@ class FavoriteFilesAddCommand(sublime_plugin.WindowCommand):
 
     def run(self):
         """Run the command."""
-
         view = self.window.active_view()
         self.name = []
+
+        Favs.check_folder_mode()
 
         if view is not None:
             view_code = 0
@@ -433,6 +436,7 @@ class FavoriteFilesRemoveCommand(sublime_plugin.WindowCommand):
 
     def run(self):
         """Run the command."""
+        Favs.check_folder_mode()
 
         if not Favs.load(win_id=self.window.id()):
             # Present both files and groups for removal

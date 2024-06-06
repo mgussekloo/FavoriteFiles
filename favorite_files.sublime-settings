@@ -8,5 +8,10 @@
     "use_sub_notify": true,
 
     // Prompt for a file alias every time you add a single file.
-    "always_ask_alias": false
+    "always_ask_alias": false,
+
+    // Enable folder mode, e.g. favorites get organized by folder instead of project.
+    // Puts a favore_files_list.json in the window's root folder
+    // Folder mode overrides enable_per_projects
+    "folder_mode": false,
 }
